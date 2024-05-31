@@ -1,3 +1,5 @@
+import {OrderItem} from "./OrderItem.ts";
+
 export interface OrderDetails {
     orderNumber: string;
     createdDate: string;

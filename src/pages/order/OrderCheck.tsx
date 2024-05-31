@@ -1,5 +1,5 @@
 import React from "react";
-import {OrderDetails} from "../../models/order/OrderDetails.ts";
+import {OrderDetails} from "../../entities/OrderDetails.ts";
 
 export const OrderCheck: React.FC<{ orderDetails: OrderDetails }> = ({ orderDetails }) => {
     return (
@@ -20,7 +20,7 @@ export const OrderCheck: React.FC<{ orderDetails: OrderDetails }> = ({ orderDeta
                             <img
                                 alt={item.name}
                                 className="w-10 h-10 rounded-full mr-2"
-                                src={item.imageUrl}
+                                src={item.imageSrc}
                                 style={{
                                     aspectRatio: "1",
                                     objectFit: "cover",
