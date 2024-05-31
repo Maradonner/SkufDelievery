@@ -1,10 +1,10 @@
-import {OrderItem} from "./OrderItem.ts";
+import {ProductItem} from "./ProductItem.ts";
 
 export interface OrderDetails {
     orderNumber: string;
     createdDate: string;
     address: string;
-    items: OrderItem[];
+    items: ProductItem[];
     totalCost: number;
     deliveryCost: number;
     serviceFee: number;

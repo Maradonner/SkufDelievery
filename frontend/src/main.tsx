@@ -5,9 +5,11 @@ import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {ShopList} from "./pages/shop/ShopList.tsx";
 import {MenuList} from "./pages/menu/MenuList.tsx";
+import {MenuCategory} from "./entities/MenuCategory.ts";
 
-const categories = [
+const categories : MenuCategory[] = [
     {
+        id: 0,
         title: "Burgers",
         items: [
             {
@@ -16,6 +18,10 @@ const categories = [
                 price: "$8.99",
                 weight: "6 oz",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Bacon Cheeseburger",
@@ -23,6 +29,10 @@ const categories = [
                 price: "$9.99",
                 weight: "7 oz",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Veggie Burger",
@@ -30,10 +40,15 @@ const categories = [
                 price: "$7.99",
                 weight: "5 oz",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
         ],
     },
     {
+        id: 1,
         title: "Hot Dogs",
         items: [
             {
@@ -42,6 +57,10 @@ const categories = [
                 price: "$4.99",
                 weight: "4 oz",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Chili Cheese Dog",
@@ -49,6 +68,10 @@ const categories = [
                 price: "$5.99",
                 weight: "5 oz",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Slaw Dog",
@@ -56,10 +79,15 @@ const categories = [
                 price: "$5.49",
                 weight: "5 oz",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
         ],
     },
     {
+        id: 2,
         title: "Sides",
         items: [
             {
@@ -68,6 +96,10 @@ const categories = [
                 price: "$3.99",
                 weight: "Small",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Onion Rings",
@@ -75,6 +107,10 @@ const categories = [
                 price: "$4.49",
                 weight: "Small",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Mozzarella Sticks",
@@ -82,6 +118,10 @@ const categories = [
                 price: "$5.99",
                 weight: "6 pc",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Mozzarella Sticks",
@@ -89,6 +129,10 @@ const categories = [
                 price: "$5.99",
                 weight: "6 pc",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Mozzarella Sticks",
@@ -96,6 +140,10 @@ const categories = [
                 price: "$5.99",
                 weight: "6 pc",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Mozzarella Sticks",
@@ -103,6 +151,10 @@ const categories = [
                 price: "$5.99",
                 weight: "6 pc",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Mozzarella Sticks",
@@ -110,10 +162,15 @@ const categories = [
                 price: "$5.99",
                 weight: "6 pc",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
         ],
     },
     {
+        id: 3,
         title: "Drinks",
         items: [
             {
@@ -122,6 +179,10 @@ const categories = [
                 price: "$2.49",
                 weight: "16 oz",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Iced Tea",
@@ -129,6 +190,10 @@ const categories = [
                 price: "$2.79",
                 weight: "16 oz",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
             {
                 name: "Milkshake",
@@ -136,6 +201,10 @@ const categories = [
                 price: "$4.99",
                 weight: "16 oz",
                 imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+                id: 0,
+                categoryId: undefined,
+                category: null,
+                available: undefined
             },
         ],
     },

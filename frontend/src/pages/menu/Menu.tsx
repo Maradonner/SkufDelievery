@@ -1,11 +1,6 @@
 import React from "react";
 import { Icon } from "../shared/Icon.tsx";
-
-interface MenuProps {
-    scrollToSection: (ref: React.RefObject<HTMLDivElement>) => void;
-    sectionRefs: { [key: string]: React.RefObject<HTMLDivElement> };
-    categories: { title: string }[];
-}
+import {MenuProps} from "../../models/menu/MenuProps.ts";
 
 export const Menu: React.FC<MenuProps> = ({ scrollToSection, sectionRefs, categories }) => {
     return (

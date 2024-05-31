@@ -1,4 +1,4 @@
-interface CartSummaryProps {
+export interface CartSummaryProps {
     deliveryCost: number;
     totalCost: number;
 }

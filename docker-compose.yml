@@ -1,0 +1,25 @@
+networks:
+  default:
+    name: 'skuf'
+
+volumes:
+  skuf-postgres:
+
+services:
+  postgres:
+    container_name: 'skuf-postgres'
+    image: 'postgres:latest'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: "skuf"
+      POSTGRES_USER: "sqladmin"
+      POSTGRES_PASSWORD: 'bnnvbrrdG557fygtse'
+    volumes:
+      - skuf-postgres:/var/lib/postgresql/data
+
+  backend:
+    container_name: 'skuf-backend'
+
+  frontend:
+    container_name: 'skuf-frontend'

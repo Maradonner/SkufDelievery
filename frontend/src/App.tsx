@@ -1,11 +1,10 @@
 import './App.css'
 import {Cart} from "./pages/cart/Cart.tsx";
 import {CartItemProps} from "./models/cart/CartItemProps.ts";
-import {OrderDetails} from "./models/order/OrderDetails.ts";
+import {OrderDetails} from "./entities/OrderDetails.ts";
 import {ShopList} from "./pages/shop/ShopList.tsx";
-import {Pizza} from "./pages/products/Pizza.tsx";
 import React from "react";
-import {OrderCheck} from "./pages/products/OrderCheck.tsx";
+import {OrderCheck} from "./pages/order/OrderCheck.tsx";
 
 
 const sampleOrderDetails : OrderDetails = {
@@ -14,19 +13,37 @@ const sampleOrderDetails : OrderDetails = {
     address: "Russia, Moscow, Tsyrk",
     items: [
         {
+            id: 0,
             name: "Milkshake",
-            price: 305,
-            imageUrl: "https://generated.vusercontent.net/placeholder.svg"
+            price: "305",
+            imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+            description: '',
+            weight: '',
+            categoryId: undefined,
+            category: null,
+            available: undefined
         },
         {
+            id: 1,
             name: "Burger with chicken patty",
-            price: 425,
-            imageUrl: "https://generated.vusercontent.net/placeholder.svg"
+            price: "425",
+            imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+            description: '',
+            weight: '',
+            categoryId: undefined,
+            category: null,
+            available: undefined
         },
         {
+            id: 2,
             name: "Viennese waffles",
-            price: 265,
-            imageUrl: "https://generated.vusercontent.net/placeholder.svg"
+            price: "265",
+            imageSrc: "https://generated.vusercontent.net/placeholder.svg",
+            description: '',
+            weight: '',
+            categoryId: undefined,
+            category: null,
+            available: undefined
         }
     ],
     totalCost: 995,
@@ -65,7 +82,6 @@ function App() {
     return (
         <>
             <OrderCheck orderDetails={sampleOrderDetails}></OrderCheck>
-            <Pizza></Pizza>
             <Cart initialItems={initialItems} initialTotalCost={initialTotalCost} />
             <ShopList></ShopList>
         </>

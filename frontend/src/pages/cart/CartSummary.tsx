@@ -1,5 +1,6 @@
 import React from "react";
 import {Icon} from "../shared/Icon.tsx";
+import {CartSummaryProps} from "../../models/cart/CartSummaryProps.ts";
 
 export const CartSummary: React.FC<CartSummaryProps> = ({ deliveryCost, totalCost }) => (
     <div className="flex items-start space-x-2 p-4 bg-white rounded-lg mb-4">

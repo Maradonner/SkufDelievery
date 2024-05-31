@@ -3,7 +3,7 @@ import {OrderDetails} from "../../entities/OrderDetails.ts";
 
 export const OrderCheck: React.FC<{ orderDetails: OrderDetails }> = ({ orderDetails }) => {
     return (
-        <div className="bg-white p-6 rounded-lg shadow max-w-sm">
+        <div className="bg-[#F8F8F8] p-6 rounded-lg shadow max-w-sm mx-auto">
             <div className="flex justify-between items-center mb-4">
                 <span className="text-sm font-bold">Order №{orderDetails.orderNumber}</span>
                 <span className="text-sm">Created {orderDetails.createdDate}</span>

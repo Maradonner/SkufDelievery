@@ -1,23 +1,8 @@
 import React, { useRef, useCallback } from "react";
 import { Menu } from "./Menu";
-import { Category } from "./Category";
+import { MenuCategory } from "./MenuCategory.tsx";
+import {MenuListProps} from "../../models/menu/MenuListProps.ts";
 
-interface CategoryItem {
-    name: string;
-    description: string;
-    price: string;
-    weight: string;
-    imageSrc: string;
-}
-
-interface Category {
-    title: string;
-    items: CategoryItem[];
-}
-
-interface MenuListProps {
-    categories: Category[];
-}
 
 export const MenuList: React.FC<MenuListProps> = ({ categories }) => {
     const sectionRefs = categories.reduce((acc, category) => {
@@ -38,7 +23,7 @@ export const MenuList: React.FC<MenuListProps> = ({ categories }) => {
                 <div className="grid gap-12">
                     {categories.map((category) => (
                         <div key={category.title} ref={sectionRefs[category.title]}>
-                            <Category title={category.title} items={category.items} />
+                            <MenuCategory title={category.title} items={category.items} />
                         </div>
                     ))}
                 </div>

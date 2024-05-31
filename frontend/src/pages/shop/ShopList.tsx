@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Icon } from "../shared/Icon.tsx";
-import {Restaurant} from "../../models/Restaurant.ts";
+import {Restaurant} from "../../entities/Restaurant.ts";
 
 const sampleRestaurants: Restaurant[] = [
     { id: "1", name: "Burger King", rating: 4.5, type: "American, Burgers", status: "Open", imageSrc: "https://generated.vusercontent.net/placeholder.svg" },

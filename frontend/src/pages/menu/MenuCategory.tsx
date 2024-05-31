@@ -1,17 +1,7 @@
 import React from "react";
+import {MenuCategoryProps} from "../../models/menu/MenuCategoryProps.ts";
 
-interface CategoryProps {
-    title: string;
-    items: {
-        name: string;
-        description: string;
-        price: string;
-        weight: string;
-        imageSrc: string;
-    }[];
-}
-
-export const Category: React.FC<CategoryProps> = ({ title, items }) => {
+export const MenuCategory: React.FC<MenuCategoryProps> = ({ title, items }) => {
     return (
         <div>
             <h2 className="text-2xl font-bold mb-6">{title}</h2>
