@@ -20,6 +20,23 @@ services:
 
   backend:
     container_name: 'skuf-backend'
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - default
 
   frontend:
     container_name: 'skuf-frontend'
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend:/app
+      - ./shared:/app/shared
+    networks:
+      - default

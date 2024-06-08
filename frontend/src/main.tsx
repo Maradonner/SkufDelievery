@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import {ShopList} from "./pages/shop/ShopList.tsx";
 import {MenuList} from "./pages/menu/MenuList.tsx";
 import {MenuCategory} from "./entities/MenuCategory.ts";
 

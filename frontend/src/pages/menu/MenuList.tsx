@@ -6,6 +6,7 @@ import {MenuListProps} from "../../models/menu/MenuListProps.ts";
 
 export const MenuList: React.FC<MenuListProps> = ({ categories }) => {
     const sectionRefs = categories.reduce((acc, category) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         acc[category.title] = useRef<HTMLDivElement>(null);
         return acc;
     }, {} as { [key: string]: React.RefObject<HTMLDivElement> });
