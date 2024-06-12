@@ -25,6 +25,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://sqladmin:bnnvbrrdG557fygtse@postgres:5432/skuf"
     networks:
       - default
 

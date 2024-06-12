@@ -1,0 +1,51 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Restaurant {
+  id       String       @id @default(uuid())
+  name     String
+  rating   Float
+  type     String
+  status   String
+  imageSrc String
+  products ProductItem[]
+}
+
+model MenuCategory {
+  id    Int          @id @default(autoincrement())
+  title String
+  items ProductItem[]
+}
+
+model ProductItem {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  price       String
+  weight      String
+  imageSrc    String
+  categoryId  Int?
+  category    MenuCategory? @relation(fields: [categoryId], references: [id])
+  available   Boolean
+  restaurantId String?
+  restaurant  Restaurant?   @relation(fields: [restaurantId], references: [id])
+  orderId     String?
+  order       OrderDetails? @relation(fields: [orderId], references: [orderNumber])
+}
+
+model OrderDetails {
+  orderNumber   String        @id @default(uuid())
+  createdDate   DateTime      @default(now())
+  address       String
+  items         ProductItem[]
+  totalCost     Float
+  deliveryCost  Float
+  serviceFee    Float
+  totalAmount   Float
+}
