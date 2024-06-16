@@ -29,16 +29,16 @@ services:
       DATABASE_URL: "postgresql://sqladmin:bnnvbrrdG557fygtse@postgres:5432/skuf"
     networks:
       - default
-
-  frontend:
-    container_name: 'skuf-frontend'
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    volumes:
-      - ./frontend:/app
-      - ./shared:/app/shared
-    networks:
-      - default
+#
+#  frontend:
+#    container_name: 'skuf-frontend'
+#    build:
+#      context: ./frontend
+#      dockerfile: Dockerfile
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./frontend:/app
+#      - ./shared:/app/shared
+#    networks:
+#      - default
