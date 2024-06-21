@@ -1,7 +1,7 @@
 import React from "react";
 import {MenuCategoryProps} from "../../models/menu/MenuCategoryProps.ts";
 
-export const MenuCategory: React.FC<MenuCategoryProps> = ({ title, items }) => {
+export const MenuCategoryComponent: React.FC<MenuCategoryProps> = ({ title, items }) => {
     return (
         <div>
             <h2 className="text-2xl font-bold mb-6">{title}</h2>

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import {ApiOperation, ApiParam, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {RestaurantService} from "./RestaurantService";
-import {CreateRestaurantDto} from "./dto/CreateRestaurantDto";
+import {RestaurantService} from "../services/RestaurantService";
+import {CreateRestaurantDto} from "../dto/CreateRestaurantDto";
 import {Restaurant} from "@prisma/client";
 
 @ApiTags('restaurants')

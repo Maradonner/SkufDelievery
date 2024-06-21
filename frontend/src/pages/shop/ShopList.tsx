@@ -1,27 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Icon } from "../shared/Icon.tsx";
-import {Restaurant} from "../../entities/Restaurant.ts";
-
-const sampleRestaurants: Restaurant[] = [
-    { id: "1", name: "Burger King", rating: 4.5, type: "American, Burgers", status: "Open", imageSrc: "https://generated.vusercontent.net/placeholder.svg" },
-    { id: "2", name: "Sushi Samurai", rating: 4.8, type: "Japanese, Sushi", status: "Open", imageSrc: "https://generated.vusercontent.net/placeholder.svg" },
-    { id: "3", name: "Pizzeria Napoletana", rating: 4.2, type: "Italian, Pizza", status: "Open", imageSrc: "https://generated.vusercontent.net/placeholder.svg" },
-    { id: "4", name: "Pho Saigon", rating: 4.7, type: "Vietnamese, Noodles", status: "Open", imageSrc: "https://generated.vusercontent.net/placeholder.svg" },
-    { id: "5", name: "Taco Loco", rating: 4.1, type: "Mexican, Tacos", status: "Closed", imageSrc: "https://generated.vusercontent.net/placeholder.svg" },
-    { id: "6", name: "Sichuan Spice", rating: 4.6, type: "Chinese, Sichuan", status: "Open", imageSrc: "https://generated.vusercontent.net/placeholder.svg" },
-    { id: "7", name: "Kebab House", rating: 4.3, type: "Middle Eastern, Kebabs", status: "Open", imageSrc: "https://generated.vusercontent.net/placeholder.svg" },
-    { id: "8", name: "Sushi Deluxe", rating: 4.9, type: "Japanese, Sushi", status: "Open", imageSrc: "https://generated.vusercontent.net/placeholder.svg" },
-];
+import { Icon } from "../shared/Icon";
+import { Restaurant } from "../../entities/Restaurant";
+import {API} from "../../api";
 
 export const ShopList: React.FC = () => {
+    const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const api = new API();
+
+        api.getRestaurants()
+            .then((data) => {
+                if (Array.isArray(data)) {
+                    setRestaurants(data);
+                    console.log(data)
+                } else {
+                    throw new Error("Invalid response format");
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                setError("Failed to fetch restaurants.");
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
+
     return (
         <div className="flex flex-col min-h-screen">
-
             <main className="container mx-auto px-4 md:px-6 py-8">
                 <h2 className="text-2xl font-bold mb-4">Restaurants Near You</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {sampleRestaurants.map((restaurant) => (
+                    {restaurants.map((restaurant) => (
                         <Link key={restaurant.id} to={`/restaurant/${restaurant.id}`} className="block no-underline text-current">
                             <div className="bg-white dark:bg-gray-950 rounded-lg shadow-sm overflow-hidden relative">
                                 <div
@@ -57,7 +78,6 @@ export const ShopList: React.FC = () => {
                     ))}
                 </div>
             </main>
-
         </div>
     );
 };

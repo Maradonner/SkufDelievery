@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,19 +8,22 @@ datasource db {
 }
 
 model Restaurant {
-  id       String       @id @default(uuid())
+  id       String        @id @default(uuid())
   name     String
   rating   Float
   type     String
   status   String
   imageSrc String
   products ProductItem[]
+  menu     MenuCategory[]
 }
 
 model MenuCategory {
-  id    Int          @id @default(autoincrement())
-  title String
-  items ProductItem[]
+  id          Int          @id @default(autoincrement())
+  title       String
+  items       ProductItem[]
+  restaurantId String
+  restaurant  Restaurant  @relation(fields: [restaurantId], references: [id])
 }
 
 model ProductItem {
@@ -41,17 +38,26 @@ model ProductItem {
   available   Boolean
   restaurantId String?
   restaurant  Restaurant?   @relation(fields: [restaurantId], references: [id])
-  orderId     String?
-  order       OrderDetails? @relation(fields: [orderId], references: [orderNumber])
+  orders      ProductItemsOnOrders[]
 }
 
 model OrderDetails {
   orderNumber   String        @id @default(uuid())
   createdDate   DateTime      @default(now())
   address       String
-  items         ProductItem[]
+  items         ProductItemsOnOrders[]
   totalCost     Float
   deliveryCost  Float
   serviceFee    Float
   totalAmount   Float
+}
+
+model ProductItemsOnOrders {
+  productId Int
+  orderId   String
+
+  product   ProductItem @relation(fields: [productId], references: [id])
+  order     OrderDetails @relation(fields: [orderId], references: [orderNumber])
+
+  @@id([productId, orderId])
 }

@@ -81,8 +81,8 @@ const initialTotalCost = initialItems.reduce((acc, item) => acc + item.price * i
 function App() {
     return (
         <>
-            <OrderCheck orderDetails={sampleOrderDetails}></OrderCheck>
-            <Cart initialItems={initialItems} initialTotalCost={initialTotalCost} />
+            {/*<OrderCheck orderDetails={sampleOrderDetails}></OrderCheck>*/}
+            {/*<Cart initialItems={initialItems} initialTotalCost={initialTotalCost} />*/}
             <ShopList></ShopList>
         </>
     )
