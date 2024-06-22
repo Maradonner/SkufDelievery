@@ -10,7 +10,7 @@ services:
     container_name: 'skuf-postgres'
     image: 'postgres:latest'
     ports:
-      - '5432:5432'
+      - '5433:5432'
     environment:
       POSTGRES_DB: "skuf"
       POSTGRES_USER: "sqladmin"
@@ -21,24 +21,11 @@ services:
   backend:
     container_name: 'skuf-backend'
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+    image: varaking/skuf-backend:latest
     ports:
       - "3000:3000"
     environment:
       DATABASE_URL: "postgresql://sqladmin:bnnvbrrdG557fygtse@postgres:5432/skuf"
     networks:
       - default
-#
-#  frontend:
-#    container_name: 'skuf-frontend'
-#    build:
-#      context: ./frontend
-#      dockerfile: Dockerfile
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - ./frontend:/app
-#      - ./shared:/app/shared
-#    networks:
-#      - default
