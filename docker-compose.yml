@@ -24,7 +24,7 @@ services:
       context: .
     image: varaking/skuf-backend:latest
     ports:
-      - "80:3000"
+      - "3000:3000"
     environment:
       DATABASE_URL: "postgresql://sqladmin:bnnvbrrdG557fygtse@109.68.213.18:5433/skuf"
     networks:
@@ -36,8 +36,8 @@ services:
       context: .
     image: varaking/skuf-frontend:latest
     ports:
-      - "80:3000"
+      - "80:80"
     environment:
-      VITE_BACKEND_URL: "http://109.68.213.18"
+      VITE_BACKEND_URL: "109.68.213.18:3000"
     networks:
       - default
