@@ -4,21 +4,25 @@ import App from './App.tsx'
 import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {MenuList} from "./pages/menu/MenuList.tsx";
+import ErrorBoundary from "./pages/shared/ErrorBoundary.tsx";
 
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <div><App/></div>
+        element: <App />,
+        errorElement: <div>Page not found</div>,
     },
     {
         path: "/menu/:restaurantId",
-        element: <div><MenuList/></div>
+        element: <MenuList />,
     },
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <RouterProvider router={router}/>
+        <ErrorBoundary>
+            <RouterProvider router={router} />
+        </ErrorBoundary>
     </React.StrictMode>,
 )
