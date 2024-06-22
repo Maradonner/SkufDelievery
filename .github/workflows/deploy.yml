@@ -49,9 +49,9 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
-        working-directory: backend
         uses: docker/build-push-action@v2
         with:
+          context: ./backend
           push: true
           tags: varaking/skuf-backend:latest
 
