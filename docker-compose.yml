@@ -25,5 +25,7 @@ services:
     image: varaking/skuf-backend:latest
     ports:
       - "80:3000"
+    environment:
+      DATABASE_URL: "postgresql://sqladmin:bnnvbrrdG557fygtse@109.68.213.18:5433/skuf"
     networks:
       - default
