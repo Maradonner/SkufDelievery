@@ -1,4 +1,4 @@
-name: Deploy Vite App to GitHub Pages
+name: Deploy Production
 
 on:
   push:
@@ -19,12 +19,15 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
+        working-directory: frontend
         run: yarn install
 
       - name: Build project
+        working-directory: frontend
         run: yarn build:prod
 
       - name: Deploy to GitHub Pages
+        working-directory: frontend
         run: yarn deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
