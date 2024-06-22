@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
@@ -8,6 +8,8 @@ RUN yarn install
 
 COPY . .
 
+RUN npx prisma generate
+
 EXPOSE 3000
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start:prod" ]
