@@ -29,3 +29,15 @@ services:
       DATABASE_URL: "postgresql://sqladmin:bnnvbrrdG557fygtse@109.68.213.18:5433/skuf"
     networks:
       - default
+
+  frontend:
+    container_name: 'skuf-frontend'
+    build:
+      context: .
+    image: varaking/skuf-frontend:latest
+    ports:
+      - "80:3000"
+    environment:
+      VITE_BACKEND_URL: "http://109.68.213.18"
+    networks:
+      - default

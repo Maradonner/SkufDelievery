@@ -16,7 +16,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:5173',
-      'https://maradonner.github.io/SkufDelievery/'  // Production URL
+      'https://maradonner.github.io/SkufDelievery/',  // Production URL
+      'http://109.68.213.18/'
     ],
   });
 
