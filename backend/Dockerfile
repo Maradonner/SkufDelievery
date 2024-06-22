@@ -10,6 +10,8 @@ COPY prisma ./prisma
 
 COPY src ./src
 
+COPY tsconfig.json ./
+
 RUN npx prisma generate
 
 RUN yarn build
