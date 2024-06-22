@@ -7,6 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OrderState {
+  PENDING
+  CONFIRMED
+  DELIVERED
+  CANCELED
+}
+
 model Restaurant {
   id       String        @id @default(uuid())
   name     String
@@ -50,6 +57,7 @@ model OrderDetails {
   deliveryCost  Float
   serviceFee    Float
   totalAmount   Float
+  state         OrderState    @default(PENDING)
 }
 
 model ProductItemsOnOrders {

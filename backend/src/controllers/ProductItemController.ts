@@ -1,4 +1,4 @@
-import {Controller, Post, Body, Param, Put, ParseIntPipe} from '@nestjs/common';
+import {Controller, Post, Body, Param, Put, ParseIntPipe, Delete} from '@nestjs/common';
 import { ProductItem } from '@prisma/client';
 import {ApiTags, ApiOperation, ApiResponse, ApiParam} from '@nestjs/swagger';
 import {ProductItemService} from "../services/ProductItemService";
@@ -28,5 +28,14 @@ export class ProductItemController {
         @Body() data: UpdateProductItemDto
     ): Promise<ProductItem> {
         return this.productItemService.update(id, data);
+    }
+
+    @Delete(':id')
+    @ApiOperation({ summary: 'Delete a product item' })
+    @ApiParam({ name: 'id', required: true, description: 'Product item ID' })
+    @ApiResponse({ status: 200, description: 'The product item has been successfully deleted.' })
+    @ApiResponse({ status: 404, description: 'Product item not found.' })
+    async delete(@Param('id', ParseIntPipe) id: number): Promise<ProductItem> {
+        return this.productItemService.delete(id);
     }
 }

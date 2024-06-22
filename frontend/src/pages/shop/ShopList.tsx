@@ -43,7 +43,7 @@ export const ShopList: React.FC = () => {
                 <h2 className="text-2xl font-bold mb-4">Restaurants Near You</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {restaurants.map((restaurant) => (
-                        <Link key={restaurant.id} to={`/restaurant/${restaurant.id}`} className="block no-underline text-current">
+                        <Link key={restaurant.id} to={`/menu/${restaurant.id}`} className="block no-underline text-current">
                             <div className="bg-white dark:bg-gray-950 rounded-lg shadow-sm overflow-hidden relative">
                                 <div
                                     className={`absolute top-4 left-4 px-2 py-1 rounded-md text-white text-xs font-medium ${
