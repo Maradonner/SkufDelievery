@@ -9,7 +9,7 @@
     "build:prod": "tsc && vite build --mode production",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist --repo https://${GITHUB_TOKEN}@github.com/Maradonner/SkufDelievery.git"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
