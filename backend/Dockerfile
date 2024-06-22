@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:20
 
 WORKDIR /usr/src/app
 
@@ -6,11 +6,7 @@ COPY package.json yarn.lock ./
 
 RUN yarn install
 
-COPY prisma ./prisma
-
-COPY src ./src
-
-COPY tsconfig.json ./
+COPY . .
 
 RUN npx prisma generate
 
@@ -18,4 +14,4 @@ RUN yarn build
 
 EXPOSE 3000
 
-CMD [ "yarn", "start:prod" ]
+CMD ["yarn", "start:prod"]
