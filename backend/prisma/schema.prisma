@@ -15,7 +15,7 @@ enum OrderState {
 }
 
 model Restaurant {
-  id       String        @id @default(uuid())
+  id       String         @id @default(uuid())
   name     String
   rating   Float
   type     String
@@ -26,46 +26,74 @@ model Restaurant {
 }
 
 model MenuCategory {
-  id          Int          @id @default(autoincrement())
-  title       String
-  items       ProductItem[]
+  id           Int           @id @default(autoincrement())
+  title        String
+  items        ProductItem[]
   restaurantId String
-  restaurant  Restaurant  @relation(fields: [restaurantId], references: [id])
+  restaurant   Restaurant    @relation(fields: [restaurantId], references: [id])
 }
 
 model ProductItem {
-  id          Int          @id @default(autoincrement())
-  name        String
-  description String
-  price       String
-  weight      String
-  imageSrc    String
-  categoryId  Int?
-  category    MenuCategory? @relation(fields: [categoryId], references: [id])
-  available   Boolean
+  id           Int                    @id @default(autoincrement())
+  name         String
+  description  String
+  price        String
+  weight       String
+  imageSrc     String
+  categoryId   Int?
+  category     MenuCategory?          @relation(fields: [categoryId], references: [id])
+  available    Boolean
   restaurantId String?
-  restaurant  Restaurant?   @relation(fields: [restaurantId], references: [id])
-  orders      ProductItemsOnOrders[]
+  restaurant   Restaurant?            @relation(fields: [restaurantId], references: [id])
+  orders       ProductItemsOnOrders[]
+  CartItem     CartItem[]
 }
 
 model OrderDetails {
-  orderNumber   String        @id @default(uuid())
-  createdDate   DateTime      @default(now())
-  address       String
-  items         ProductItemsOnOrders[]
-  totalCost     Float
-  deliveryCost  Float
-  serviceFee    Float
-  totalAmount   Float
-  state         OrderState    @default(PENDING)
+  orderNumber  String                 @id @default(uuid())
+  createdDate  DateTime               @default(now())
+  address      String
+  items        ProductItemsOnOrders[]
+  totalCost    Float
+  deliveryCost Float
+  serviceFee   Float
+  totalAmount  Float
+  state        OrderState             @default(PENDING)
 }
 
 model ProductItemsOnOrders {
   productId Int
   orderId   String
 
-  product   ProductItem @relation(fields: [productId], references: [id])
-  order     OrderDetails @relation(fields: [orderId], references: [orderNumber])
+  product ProductItem  @relation(fields: [productId], references: [id])
+  order   OrderDetails @relation(fields: [orderId], references: [orderNumber])
 
   @@id([productId, orderId])
+}
+
+model Cart {
+  id          String        @id @default(uuid())
+  userId      String        @unique
+  items       CartItem[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id])
+}
+
+model CartItem {
+  id         Int         @id @default(autoincrement())
+  cartId     String
+  productId  Int
+  quantity   Int
+
+  cart       Cart        @relation(fields: [cartId], references: [id])
+  product    ProductItem @relation(fields: [productId], references: [id])
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  password  String
+  cart      Cart?
 }

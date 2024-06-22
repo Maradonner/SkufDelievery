@@ -10,10 +10,18 @@ import {MenuCategoryService} from "./services/MenuCategoryService";
 import {ProductItemController} from "./controllers/ProductItemController";
 import {OrderController} from "./controllers/OrderController";
 import {OrderService} from "./services/OrderService";
+import {CartService} from "./services/CartService";
+import {CartController} from "./controllers/CartController";
+import {AuthService} from "./auth/AuthService";
+import {GoogleStrategy} from "./auth/GoogleStrategy";
+import {PassportModule} from "@nestjs/passport";
+import {AuthController} from "./controllers/AuthController";
+import {UserService} from "./services/UserService";
+import {SessionSerializer} from "./SessionSerializer";
 
 @Module({
-  imports: [],
-  controllers: [AppController, RestaurantController, MenuCategoryController, RestaurantController, ProductItemController, OrderController],
-  providers: [AppService, RestaurantService, PrismaService, MenuCategoryController, ProductItemService, MenuCategoryService, OrderService],
+  imports: [PassportModule.register({ session: true })],
+  controllers: [AppController, RestaurantController, MenuCategoryController, RestaurantController, ProductItemController, OrderController, CartController, AuthController],
+  providers: [AppService, RestaurantService, PrismaService, MenuCategoryController, ProductItemService, MenuCategoryService, OrderService, CartService, UserService, AuthService, GoogleStrategy, SessionSerializer],
 })
 export class AppModule {}
