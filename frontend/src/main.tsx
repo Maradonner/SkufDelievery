@@ -9,12 +9,12 @@ import ErrorBoundary from "./pages/shared/ErrorBoundary.tsx";
 
 const router = createBrowserRouter([
     {
-        path: "/SkufDelievery/",
+        path: "/",
         element: <App />,
         errorElement: <div>Page not found</div>,
     },
     {
-        path: "/SkufDelievery/menu/:restaurantId",
+        path: "/menu/:restaurantId",
         element: <MenuList />,
     },
 ])
