@@ -22,10 +22,14 @@ jobs:
       - name: Install dependencies
         working-directory: frontend
         run: yarn install
+        env:
+          BACKEND_URL: "http://109.68.213.18"
 
       - name: Build project
         working-directory: frontend
         run: yarn build:prod
+        env:
+          BACKEND_URL: "http://109.68.213.18"
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
