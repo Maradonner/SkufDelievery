@@ -2,7 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import {Restaurant} from "../entities/Restaurant.ts";
 import {MenuCategory} from "../entities/MenuCategory.ts";
 
-const baseURL = "http://localhost:3000";
+const baseURL = import.meta.env.BACKEND_URL
 
 export class API {
     client: AxiosInstance;
