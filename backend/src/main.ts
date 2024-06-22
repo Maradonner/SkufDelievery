@@ -17,7 +17,9 @@ async function bootstrap() {
     origin: [
       'http://localhost:5173',
       'https://maradonner.github.io/SkufDelievery/',  // Production URL
-      'http://109.68.213.18/'
+      'http://109.68.213.18',
+      '109.68.213.18:80',
+      '109.68.213.18:3000'
     ],
   });
 
