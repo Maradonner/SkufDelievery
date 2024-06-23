@@ -9,4 +9,5 @@ export interface OrderDetails {
     deliveryCost: number;
     serviceFee: number;
     totalAmount: number;
+    state: string;
 }

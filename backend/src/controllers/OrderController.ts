@@ -24,4 +24,20 @@ export class OrderController {
     async viewOrder(@Param('orderNumber') orderNumber: string): Promise<OrderDetailsDto> {
         return this.orderService.viewOrder(orderNumber);
     }
+
+    @Post(':orderNumber/confirm')
+    @ApiOperation({ summary: 'Confirm the order' })
+    @ApiResponse({ status: 200, description: 'Order confirmed successfully.' })
+    @ApiResponse({ status: 404, description: 'Order not found.' })
+    async confirmOrder(@Param('orderNumber') orderNumber: string): Promise<OrderDetailsDto> {
+        return this.orderService.confirmOrder(orderNumber);
+    }
+
+    @Post(':orderNumber/decline')
+    @ApiOperation({ summary: 'Decline the order' })
+    @ApiResponse({ status: 200, description: 'Order declined successfully.' })
+    @ApiResponse({ status: 404, description: 'Order not found.' })
+    async declineOrder(@Param('orderNumber') orderNumber: string): Promise<OrderDetailsDto> {
+        return this.orderService.declineOrder(orderNumber);
+    }
 }

@@ -65,5 +65,17 @@ export class API {
             .get<OrderDetails>(`/orders/${orderNumber}`)
             .then((res) => res.data);
     }
+
+    async confirmOrder(orderNumber: string): Promise<void> {
+        return this.client
+            .post<void>(`/orders/${orderNumber}/confirm`)
+            .then((res) => res.data);
+    }
+
+    async declineOrder(orderNumber: string): Promise<void> {
+        return this.client
+            .post<void>(`/orders/${orderNumber}/decline`)
+            .then((res) => res.data);
+    }
 }
 

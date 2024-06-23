@@ -176,7 +176,7 @@ export class CartService {
         const totalCost = items.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
         const deliveryCost = 10.0; // Example fixed delivery cost
         const serviceFee = 5.0; // Example fixed service fee
-        const totalAmount = totalCost + deliveryCost + serviceFee;
+        const totalAmount = parseFloat((totalCost + deliveryCost + serviceFee).toFixed(2));
 
         return {
             items,

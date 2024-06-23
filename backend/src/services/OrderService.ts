@@ -25,13 +25,13 @@ export class OrderService {
         }
 
         // Calculate costs
-        const totalCost = data.productItems.reduce((sum, item) => {
+        const totalCost = parseFloat(data.productItems.reduce((sum, item) => {
             const product = productItems.find((p) => p.id === item.productId);
             return sum + parseFloat(product.price) * item.quantity;
-        }, 0);
+        }, 0).toFixed(2));
         const deliveryCost = 10.0; // Example fixed delivery cost
         const serviceFee = 5.0; // Example fixed service fee
-        const totalAmount = totalCost + deliveryCost + serviceFee;
+        const totalAmount = parseFloat((totalCost + deliveryCost + serviceFee).toFixed(2));
 
         // Create the order
         const order = await this.prisma.orderDetails.create({
@@ -63,6 +63,46 @@ export class OrderService {
         return this.mapOrderDetails(order);
     }
 
+    async confirmOrder(orderNumber: string): Promise<OrderDetailsDto> {
+        const order = await this.prisma.orderDetails.update({
+            where: { orderNumber },
+            data: { state: OrderState.CONFIRMED },
+            include: {
+                items: {
+                    include: {
+                        product: true,
+                    },
+                },
+            },
+        });
+
+        if (!order) {
+            throw new NotFoundException(`Order with orderNumber ${orderNumber} not found`);
+        }
+
+        return this.mapOrderDetails(order);
+    }
+
+    async declineOrder(orderNumber: string): Promise<OrderDetailsDto> {
+        const order = await this.prisma.orderDetails.update({
+            where: { orderNumber },
+            data: { state: OrderState.CANCELED },
+            include: {
+                items: {
+                    include: {
+                        product: true,
+                    },
+                },
+            },
+        });
+
+        if (!order) {
+            throw new NotFoundException(`Order with orderNumber ${orderNumber} not found`);
+        }
+
+        return this.mapOrderDetails(order);
+    }
+
     private generateOrderNumber(): string {
         return 'order-' + Math.random().toString(36).substr(2, 9);
     }
@@ -83,10 +123,10 @@ export class OrderService {
             orderNumber: order.orderNumber,
             createdDate: order.createdDate,
             address: order.address,
-            totalCost: order.totalCost,
+            totalCost: parseFloat(order.totalCost.toFixed(2)),
             deliveryCost: order.deliveryCost,
             serviceFee: order.serviceFee,
-            totalAmount: order.totalAmount,
+            totalAmount: parseFloat(order.totalAmount.toFixed(2)),
             state: order.state,
             items,
         };
