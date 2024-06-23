@@ -10,7 +10,7 @@ import { OrderDetails, OrderState  } from '@prisma/client';
 export class OrderService {
     constructor(private prisma: PrismaService) {}
 
-    async create(data: CreateOrderDto): Promise<OrderDetailsDto> {
+    async create(userId: string, data: CreateOrderDto): Promise<OrderDetailsDto> {
         // Validate that all product items exist
         const productItems = await this.prisma.productItem.findMany({
             where: {
@@ -25,10 +25,12 @@ export class OrderService {
         }
 
         // Calculate costs
-        const totalCost = parseFloat(data.productItems.reduce((sum, item) => {
-            const product = productItems.find((p) => p.id === item.productId);
-            return sum + parseFloat(product.price) * item.quantity;
-        }, 0).toFixed(2));
+        const totalCost = parseFloat(
+            data.productItems.reduce((sum, item) => {
+                const product = productItems.find((p) => p.id === item.productId);
+                return sum + parseFloat(product.price) * item.quantity;
+            }, 0).toFixed(2)
+        );
         const deliveryCost = 10.0; // Example fixed delivery cost
         const serviceFee = 5.0; // Example fixed service fee
         const totalAmount = parseFloat((totalCost + deliveryCost + serviceFee).toFixed(2));
@@ -44,6 +46,7 @@ export class OrderService {
                 serviceFee,
                 totalAmount,
                 state: OrderState.PENDING, // Set default state
+                userId,
                 items: {
                     create: data.productItems.map((item) => ({
                         productId: item.productId,
@@ -63,7 +66,7 @@ export class OrderService {
         return this.mapOrderDetails(order);
     }
 
-    async confirmOrder(orderNumber: string): Promise<OrderDetailsDto> {
+    async confirmOrder(userId: string, orderNumber: string): Promise<OrderDetailsDto> {
         const order = await this.prisma.orderDetails.update({
             where: { orderNumber },
             data: { state: OrderState.CONFIRMED },
@@ -76,14 +79,14 @@ export class OrderService {
             },
         });
 
-        if (!order) {
+        if (!order || userId !== userId) {
             throw new NotFoundException(`Order with orderNumber ${orderNumber} not found`);
         }
 
         return this.mapOrderDetails(order);
     }
 
-    async declineOrder(orderNumber: string): Promise<OrderDetailsDto> {
+    async declineOrder(userId: string, orderNumber: string): Promise<OrderDetailsDto> {
         const order = await this.prisma.orderDetails.update({
             where: { orderNumber },
             data: { state: OrderState.CANCELED },
@@ -96,7 +99,7 @@ export class OrderService {
             },
         });
 
-        if (!order) {
+        if (!order || userId !== userId) {
             throw new NotFoundException(`Order with orderNumber ${orderNumber} not found`);
         }
 
@@ -132,7 +135,7 @@ export class OrderService {
         };
     }
 
-    async viewOrder(orderNumber: string): Promise<OrderDetailsDto> {
+    async viewOrder(userId: string, orderNumber: string): Promise<OrderDetailsDto> {
         const order = await this.prisma.orderDetails.findUnique({
             where: { orderNumber },
             include: {
@@ -144,7 +147,7 @@ export class OrderService {
             },
         });
 
-        if (!order) {
+        if (!order || userId !== userId) {
             throw new NotFoundException(`Order with orderNumber ${orderNumber} not found`);
         }
 

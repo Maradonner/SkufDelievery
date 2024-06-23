@@ -22,7 +22,7 @@ export class UpdateProductItemDto {
     @IsOptional()
     weight?: string;
 
-    @ApiProperty({ example: 'http://example.com/image.jpg' })
+    @ApiProperty({ example: 'https://generated.vusercontent.net/placeholder.svg' })
     @IsString()
     @IsOptional()
     imageSrc?: string;

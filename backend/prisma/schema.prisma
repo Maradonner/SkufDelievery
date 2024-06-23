@@ -61,6 +61,8 @@ model OrderDetails {
   state                OrderState
   items                OrderItem[] // Add this line to create the back relation
   ProductItemsOnOrders ProductItemsOnOrders[]
+  userId               String
+  user                 User                   @relation(fields: [userId], references: [id])
 }
 
 model OrderItem {
@@ -102,9 +104,18 @@ model CartItem {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  email    String  @unique
-  name     String?
-  password String
-  cart     Cart?
+  id           String         @id @default(uuid())
+  email        String?        @unique
+  name         String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Cart         Cart?
+  OrderDetails OrderDetails[]
+}
+
+model session {
+  id     Int      @id @default(autoincrement())
+  sid    String   @unique
+  sess   Json
+  expire DateTime @db.Timestamp(6)
 }

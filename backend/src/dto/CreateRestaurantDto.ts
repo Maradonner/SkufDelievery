@@ -13,6 +13,6 @@ export class CreateRestaurantDto {
     @ApiProperty({ example: 'Open' })
     status: 'Open' | 'Closed';
 
-    @ApiProperty({ example: 'http://example.com/image.jpg' })
+    @ApiProperty({ example: 'https://generated.vusercontent.net/placeholder.svg' })
     imageSrc: string;
 }
