@@ -1,5 +1,10 @@
 # SkufDelievery
 
+## Links
+
+- **Frontend**: [http://109.68.213.18/](http://109.68.213.18/)
+- **API**: [http://109.68.213.18:3000/](http://109.68.213.18:3000/)
+
 ## Prerequisites
 
 - **Node.js**: v20.x
