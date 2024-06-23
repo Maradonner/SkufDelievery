@@ -4,6 +4,7 @@ import {CartService} from "../services/CartService";
 import {AddToCartDto} from "../dto/Cart/AddToCartDto";
 import {Cart} from "@prisma/client";
 import {RemoveFromCartDto} from "../dto/Cart/RemoveFromCartDto";
+import {DecreaseCartItemDto} from "../dto/Cart/DecreaseCartItemDto";
 
 @ApiTags('cart')
 @Controller('cart')
@@ -24,6 +25,14 @@ export class CartController {
     @ApiResponse({ status: 404, description: 'Product or cart not found.' })
     async removeFromCart(@Body() data: RemoveFromCartDto): Promise<Cart> {
         return this.cartService.removeFromCart(data);
+    }
+
+    @Post('decrease')
+    @ApiOperation({ summary: 'Decrease the count of a product in the cart by one' })
+    @ApiResponse({ status: 200, description: 'The product count has been decreased by one.' })
+    @ApiResponse({ status: 404, description: 'Product or cart not found.' })
+    async decreaseCartItem(@Body() data: DecreaseCartItemDto): Promise<Cart> {
+        return this.cartService.decreaseCartItem(data);
     }
 
     @Get(':userId')

@@ -1,13 +1,38 @@
-// Cart.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CartItem } from "./CartItem";
 import { CartSummary } from "./CartSummary";
-import {CartProps} from "../../models/cart/CartProps.ts";
-import {CartItemProps} from "../../models/cart/CartItemProps.ts";
+import { CartItemProps } from "../../models/cart/CartItemProps";
+import { API } from "../../api";  // Adjust the import path accordingly
 
-export const Cart: React.FC<CartProps> = ({ initialItems, initialTotalCost }) => {
-    const [items, setItems] = useState<CartItemProps[]>(initialItems);
-    const [totalCost, setTotalCost] = useState<number>(initialTotalCost);
+const api = new API();
+
+export const Cart: React.FC = () => {
+    const [items, setItems] = useState<CartItemProps[]>([]);
+    const [totalCost, setTotalCost] = useState<number>(0);
+
+    useEffect(() => {
+        const fetchCart = async () => {
+            try {
+                const cart = await api.getCart();
+                const fetchedItems: CartItemProps[] = cart.items.map(item => ({
+                    id: item.id,
+                    cartId: item.cartId,
+                    productId: item.productId,
+                    quantity: item.quantity,
+                    price: item.product.price,
+                    name: item.product.name,
+                    weight: item.product.weight,
+                    imageSrc: item.product.imageSrc
+                }));
+                setItems(fetchedItems);
+                updateTotalCost(fetchedItems);
+            } catch (error) {
+                console.error("Failed to fetch cart:", error);
+            }
+        };
+
+        fetchCart();
+    }, []);
 
     const handleIncrease = (index: number) => {
         const newItems = [...items];
@@ -16,15 +41,26 @@ export const Cart: React.FC<CartProps> = ({ initialItems, initialTotalCost }) =>
         updateTotalCost(newItems);
     };
 
-    const handleDecrease = (index: number) => {
-        const newItems = [...items];
-        if (newItems[index].quantity > 1) {
-            newItems[index].quantity -= 1;
-        } else {
-            newItems.splice(index, 1);
+    const handleDecrease = async (index: number) => {
+        const productId = items[index].productId;
+
+        try {
+            const updatedCart = await api.decreaseCartItem(productId);
+            const updatedItems: CartItemProps[] = updatedCart.items.map(item => ({
+                id: item.id,
+                cartId: item.cartId,
+                productId: item.productId,
+                quantity: item.quantity,
+                price: item.product.price,
+                name: item.product.name,
+                weight: item.product.weight,
+                imageSrc: item.product.imageSrc
+            }));
+            setItems(updatedItems);
+            updateTotalCost(updatedItems);
+        } catch (error) {
+            console.error("Failed to decrease cart item:", error);
         }
-        setItems(newItems);
-        updateTotalCost(newItems);
     };
 
     const handleClear = () => {
