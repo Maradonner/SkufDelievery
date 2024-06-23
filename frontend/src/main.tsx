@@ -6,6 +6,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {MenuList} from "./pages/menu/MenuList.tsx";
 import ErrorBoundary from "./pages/shared/ErrorBoundary.tsx";
 import {OrderCheck} from "./pages/order/OrderCheck.tsx";
+import {Cart} from "./pages/cart/Cart.tsx";
 
 
 const router = createBrowserRouter([
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     {
         path: "/order/:orderNumber",
         element: <OrderCheck  />,
+    },
+    {
+        path: "/cart",
+        element: <Cart  />,
     },
 ])
 

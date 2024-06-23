@@ -108,7 +108,7 @@ export const Cart: React.FC = () => {
                 disabled={items.length === 0}
                 onClick={handlePay}
             >
-                Верно, о коплате
+                Продолжить
                 <span className="ml-2">{totalAmount}₽</span>
             </button>
         </div>

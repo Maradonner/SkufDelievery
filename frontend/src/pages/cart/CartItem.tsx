@@ -1,7 +1,7 @@
 import React from "react";
 import {CartItemComponentProps} from "../../models/cart/CartItemComponentProps.ts";
 import {truncateString} from "../../utils/truncateString.ts";
-import {Icon} from "../shared/Icon.tsx";
+import {Icon, MinusIcon} from "../shared/Icon.tsx";
 
 export const CartItem: React.FC<CartItemComponentProps> = ({ item, onIncrease, onDecrease }) => (
     <div className="mb-4 p-4 bg-white rounded-lg shadow">
@@ -25,7 +25,7 @@ export const CartItem: React.FC<CartItemComponentProps> = ({ item, onIncrease, o
             </div>
             <div className="flex items-center space-x-4">
                 <button className="px-3 py-1" onClick={onDecrease}>
-                    <Icon className="w-4 h-4" />
+                    <MinusIcon className="w-4 h-4" />
                 </button>
                 <div className="text-lg font-medium">{item.quantity}</div>
                 <button className="px-3 py-1" onClick={onIncrease}>

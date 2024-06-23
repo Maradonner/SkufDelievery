@@ -30,7 +30,7 @@ export const MenuCategoryComponent: React.FC<MenuCategoryProps> = ({ title, item
                             <h3 className="font-semibold text-lg">{item.name}</h3>
                             <p className="text-gray-500 dark:text-gray-400">{item.description}</p>
                             <div className="flex items-center justify-between">
-                                <span className="font-semibold">{item.price}</span>
+                                <span className="font-semibold">{item.price}₽</span>
                                 <span className="text-gray-500 dark:text-gray-400">{item.weight}</span>
                             </div>
                             <button
