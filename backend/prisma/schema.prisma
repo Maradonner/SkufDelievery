@@ -47,18 +47,29 @@ model ProductItem {
   restaurant   Restaurant?            @relation(fields: [restaurantId], references: [id])
   orders       ProductItemsOnOrders[]
   CartItem     CartItem[]
+  orderItems   OrderItem[] // Add this line to create the back relation
 }
 
 model OrderDetails {
-  orderNumber  String                 @id @default(uuid())
-  createdDate  DateTime               @default(now())
-  address      String
-  items        ProductItemsOnOrders[]
-  totalCost    Float
-  deliveryCost Float
-  serviceFee   Float
-  totalAmount  Float
-  state        OrderState             @default(PENDING)
+  orderNumber          String                 @id @default(uuid())
+  createdDate          DateTime               @default(now())
+  address              String
+  totalCost            Float
+  deliveryCost         Float
+  serviceFee           Float
+  totalAmount          Float
+  state                OrderState
+  items                OrderItem[] // Add this line to create the back relation
+  ProductItemsOnOrders ProductItemsOnOrders[]
+}
+
+model OrderItem {
+  id        Int          @id @default(autoincrement())
+  productId Int
+  orderId   String
+  quantity  Int
+  product   ProductItem  @relation(fields: [productId], references: [id])
+  order     OrderDetails @relation(fields: [orderId], references: [orderNumber])
 }
 
 model ProductItemsOnOrders {
@@ -72,28 +83,28 @@ model ProductItemsOnOrders {
 }
 
 model Cart {
-  id          String        @id @default(uuid())
-  userId      String        @unique
-  items       CartItem[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  user        User          @relation(fields: [userId], references: [id])
+  id        String     @id @default(uuid())
+  userId    String     @unique
+  items     CartItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User       @relation(fields: [userId], references: [id])
 }
 
 model CartItem {
-  id         Int         @id @default(autoincrement())
-  cartId     String
-  productId  Int
-  quantity   Int
+  id        Int    @id @default(autoincrement())
+  cartId    String
+  productId Int
+  quantity  Int
 
-  cart       Cart        @relation(fields: [cartId], references: [id])
-  product    ProductItem @relation(fields: [productId], references: [id])
+  cart    Cart        @relation(fields: [cartId], references: [id])
+  product ProductItem @relation(fields: [productId], references: [id])
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?
-  password  String
-  cart      Cart?
+  id       String  @id @default(uuid())
+  email    String  @unique
+  name     String?
+  password String
+  cart     Cart?
 }

@@ -1,9 +1,9 @@
-import {ProductItem} from "./ProductItem.ts";
-
 export interface CartItem {
     id: number;
-    cartId: string;
-    productId: number;
+    name: string;
+    description: string;
+    price: string;
+    weight: string;
+    imageSrc: string;
     quantity: number;
-    product: ProductItem;
 }

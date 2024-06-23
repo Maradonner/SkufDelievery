@@ -1,10 +1,8 @@
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Post} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post} from "@nestjs/common";
 import {OrderService} from "../services/OrderService";
-import {CreateOrderDto} from "../dto/CreateOrderDto";
-import {OrderDetails} from "@prisma/client";
-import {CalculatedOrderDetailsDto} from "../dto/CalculatedOrderDetailsDto";
-import {CalculateOrderDto} from "../dto/CalculateOrderDto";
+import {OrderDetailsDto} from "../dto/Order/OrderDetailsDto";
+import {CreateOrderDto} from "../dto/Order/CreateOrderDto";
 
 @ApiTags('orders')
 @Controller('orders')
@@ -15,15 +13,15 @@ export class OrderController {
     @ApiOperation({ summary: 'Create a new order' })
     @ApiResponse({ status: 201, description: 'The order has been successfully created.' })
     @ApiResponse({ status: 404, description: 'One or more product items not found.' })
-    async create(@Body() data: CreateOrderDto): Promise<OrderDetails> {
+    async create(@Body() data: CreateOrderDto): Promise<OrderDetailsDto> {
         return this.orderService.create(data);
     }
 
-    @Post('calculate')
-    @ApiOperation({ summary: 'Calculate order details' })
-    @ApiResponse({ status: 200, description: 'Order details calculated successfully.' })
-    @ApiResponse({ status: 404, description: 'One or more product items not found.' })
-    async calculateOrder(@Body() data: CalculateOrderDto): Promise<CalculatedOrderDetailsDto> {
-        return this.orderService.calculateOrder(data);
+    @Get(':orderNumber')
+    @ApiOperation({ summary: 'View order details' })
+    @ApiResponse({ status: 200, description: 'Order details retrieved successfully.' })
+    @ApiResponse({ status: 404, description: 'Order not found.' })
+    async viewOrder(@Param('orderNumber') orderNumber: string): Promise<OrderDetailsDto> {
+        return this.orderService.viewOrder(orderNumber);
     }
 }

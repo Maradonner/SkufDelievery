@@ -2,6 +2,8 @@ import axios, { AxiosInstance } from "axios";
 import {Restaurant} from "../entities/Restaurant.ts";
 import {MenuCategory} from "../entities/MenuCategory.ts";
 import {Cart} from "../entities/Cart.ts";
+import {CartResponse} from "../models/cart/CartResponse.ts";
+import {OrderDetails} from "../entities/OrderDetails.ts";
 
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 console.log('Backend URL:', baseURL);
@@ -34,15 +36,33 @@ export class API {
             .then((res) => res.data);
     }
 
-    async getCart(): Promise<Cart> {
+    async getCart(): Promise<CartResponse> {
         return this.client
-            .get<Cart>(`/cart/0a34e07f-15f2-41f1-8a4e-8c433fbe9e25`)
+            .get<CartResponse>(`/cart/0a34e07f-15f2-41f1-8a4e-8c433fbe9e25`)
             .then((res) => res.data);
     }
 
-    async decreaseCartItem(productId: number): Promise<Cart> {
+    async decreaseCartItem(productId: number): Promise<CartResponse> {
         return this.client
-            .post<Cart>(`/cart/decrease`, { productId, "userId": "0a34e07f-15f2-41f1-8a4e-8c433fbe9e25" })
+            .post<CartResponse>(`/cart/decrease`, { productId, "userId": "0a34e07f-15f2-41f1-8a4e-8c433fbe9e25" })
+            .then((res) => res.data);
+    }
+
+    async increaseCartItem(productId: number): Promise<CartResponse> {
+        return this.client
+            .post<CartResponse>(`/cart/increase`, { productId, "userId": "0a34e07f-15f2-41f1-8a4e-8c433fbe9e25" })
+            .then((res) => res.data);
+    }
+
+    async createOrder(address: string, productItems: { productId: number; quantity: number }[]): Promise<OrderDetails> {
+        return this.client
+            .post<OrderDetails>(`/orders`, { address, productItems })
+            .then((res) => res.data);
+    }
+
+    async getOrderDetails(orderNumber: string): Promise<OrderDetails> {
+        return this.client
+            .get<OrderDetails>(`/orders/${orderNumber}`)
             .then((res) => res.data);
     }
 }

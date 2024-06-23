@@ -1,10 +1,9 @@
 export interface CartItemProps {
     id: number;
-    cartId: string;
-    productId: number;
-    quantity: number;
-    price: number;
     name: string;
+    description: string;
+    price: string;
     weight: string;
     imageSrc: string;
+    quantity: number;
 }

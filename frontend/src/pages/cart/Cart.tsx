@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";  // Import useNavigate from react-router-dom
 import { CartItem } from "./CartItem";
 import { CartSummary } from "./CartSummary";
 import { CartItemProps } from "../../models/cart/CartItemProps";
@@ -9,23 +10,21 @@ const api = new API();
 export const Cart: React.FC = () => {
     const [items, setItems] = useState<CartItemProps[]>([]);
     const [totalCost, setTotalCost] = useState<number>(0);
+    const [deliveryCost, setDeliveryCost] = useState<number>(0);
+    const [serviceFee, setServiceFee] = useState<number>(0);
+    const [totalAmount, setTotalAmount] = useState<number>(0);
+    const [address, setAddress] = useState<string>("");
+    const navigate = useNavigate();  // Initialize useNavigate
 
     useEffect(() => {
         const fetchCart = async () => {
             try {
                 const cart = await api.getCart();
-                const fetchedItems: CartItemProps[] = cart.items.map(item => ({
-                    id: item.id,
-                    cartId: item.cartId,
-                    productId: item.productId,
-                    quantity: item.quantity,
-                    price: item.product.price,
-                    name: item.product.name,
-                    weight: item.product.weight,
-                    imageSrc: item.product.imageSrc
-                }));
-                setItems(fetchedItems);
-                updateTotalCost(fetchedItems);
+                setItems(cart.items);
+                setTotalCost(cart.totalCost);
+                setDeliveryCost(cart.deliveryCost);
+                setServiceFee(cart.serviceFee);
+                setTotalAmount(cart.totalAmount);
             } catch (error) {
                 console.error("Failed to fetch cart:", error);
             }
@@ -34,30 +33,31 @@ export const Cart: React.FC = () => {
         fetchCart();
     }, []);
 
-    const handleIncrease = (index: number) => {
-        const newItems = [...items];
-        newItems[index].quantity += 1;
-        setItems(newItems);
-        updateTotalCost(newItems);
+    const handleIncrease = async (index: number) => {
+        const productId = items[index].id;
+
+        try {
+            const updatedCart = await api.increaseCartItem(productId);
+            setItems(updatedCart.items);
+            setTotalCost(updatedCart.totalCost);
+            setDeliveryCost(updatedCart.deliveryCost);
+            setServiceFee(updatedCart.serviceFee);
+            setTotalAmount(updatedCart.totalAmount);
+        } catch (error) {
+            console.error("Failed to increase cart item:", error);
+        }
     };
 
     const handleDecrease = async (index: number) => {
-        const productId = items[index].productId;
+        const productId = items[index].id;
 
         try {
             const updatedCart = await api.decreaseCartItem(productId);
-            const updatedItems: CartItemProps[] = updatedCart.items.map(item => ({
-                id: item.id,
-                cartId: item.cartId,
-                productId: item.productId,
-                quantity: item.quantity,
-                price: item.product.price,
-                name: item.product.name,
-                weight: item.product.weight,
-                imageSrc: item.product.imageSrc
-            }));
-            setItems(updatedItems);
-            updateTotalCost(updatedItems);
+            setItems(updatedCart.items);
+            setTotalCost(updatedCart.totalCost);
+            setDeliveryCost(updatedCart.deliveryCost);
+            setServiceFee(updatedCart.serviceFee);
+            setTotalAmount(updatedCart.totalAmount);
         } catch (error) {
             console.error("Failed to decrease cart item:", error);
         }
@@ -66,11 +66,22 @@ export const Cart: React.FC = () => {
     const handleClear = () => {
         setItems([]);
         setTotalCost(0);
+        setDeliveryCost(0);
+        setServiceFee(0);
+        setTotalAmount(0);
     };
 
-    const updateTotalCost = (items: CartItemProps[]) => {
-        const newTotalCost = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-        setTotalCost(newTotalCost);
+    const handlePay = async () => {
+        const productItems = items.map(item => ({ productId: item.id, quantity: item.quantity }));
+
+        try {
+            const order = await api.createOrder(address, productItems);
+            console.log("Order created successfully:", order);
+            handleClear();
+            navigate(`/order/${order.orderNumber}`, { state: { order } });  // Redirect to order details page with order data
+        } catch (error) {
+            console.error("Failed to create order:", error);
+        }
     };
 
     return (
@@ -91,13 +102,24 @@ export const Cart: React.FC = () => {
                     onDecrease={() => handleDecrease(index)}
                 />
             ))}
-            <CartSummary deliveryCost={159} totalCost={totalCost} />
+            <div className="mb-4">
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Адрес</label>
+                <input
+                    type="text"
+                    id="address"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                />
+            </div>
+            <CartSummary deliveryCost={deliveryCost} totalCost={totalCost} />
             <button
                 className={`w-full bg-[#FFD600] text-black font-bold py-3 rounded-lg ${items.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                 disabled={items.length === 0}
+                onClick={handlePay}
             >
                 Верно, о коплате
-                <span className="ml-2">{totalCost}₽</span>
+                <span className="ml-2">{totalAmount}₽</span>
             </button>
         </div>
     );

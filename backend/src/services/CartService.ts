@@ -2,14 +2,15 @@ import {Injectable, NotFoundException} from "@nestjs/common";
 import {PrismaService} from "../prisma.service";
 import {AddToCartDto} from "../dto/Cart/AddToCartDto";
 import {RemoveFromCartDto} from "../dto/Cart/RemoveFromCartDto";
-import { Cart } from '@prisma/client';
 import {DecreaseCartItemDto} from "../dto/Cart/DecreaseCartItemDto";
+import {IncreaseCartItemDto} from "../dto/Cart/IncreaseCartItemDto";
+import {CartForDisplayDto} from "../dto/Cart/CartForDisplayDto";
 
 @Injectable()
 export class CartService {
     constructor(private prisma: PrismaService) {}
 
-    async addToCart(data: AddToCartDto): Promise<Cart> {
+    async addToCart(data: AddToCartDto): Promise<CartForDisplayDto> {
         // Check if the product exists
         const product = await this.prisma.productItem.findUnique({
             where: { id: data.productId },
@@ -56,13 +57,10 @@ export class CartService {
             }
         }
 
-        return this.prisma.cart.findUnique({
-            where: { userId: data.userId },
-            include: { items: { include: { product: true } } },
-        });
+        return this.calculateCartForDisplay(cart.id);
     }
 
-    async removeFromCart(data: RemoveFromCartDto): Promise<Cart> {
+    async removeFromCart(data: RemoveFromCartDto): Promise<CartForDisplayDto> {
         // Check if the cart exists for the user
         const cart = await this.prisma.cart.findUnique({
             where: { userId: data.userId },
@@ -84,13 +82,10 @@ export class CartService {
             where: { id: cartItem.id },
         });
 
-        return this.prisma.cart.findUnique({
-            where: { userId: data.userId },
-            include: { items: { include: { product: true } } },
-        });
+        return this.calculateCartForDisplay(cart.id);
     }
 
-    async decreaseCartItem(data: DecreaseCartItemDto): Promise<Cart> {
+    async decreaseCartItem(data: DecreaseCartItemDto): Promise<CartForDisplayDto> {
         // Check if the cart exists for the user
         const cart = await this.prisma.cart.findUnique({
             where: { userId: data.userId },
@@ -120,13 +115,36 @@ export class CartService {
             });
         }
 
-        return this.prisma.cart.findUnique({
-            where: { userId: data.userId },
-            include: { items: { include: { product: true } } },
-        });
+        return this.calculateCartForDisplay(cart.id);
     }
 
-    async getCart(userId: string): Promise<Cart> {
+    async increaseCartItem(data: IncreaseCartItemDto): Promise<CartForDisplayDto> {
+        // Check if the cart exists for the user
+        const cart = await this.prisma.cart.findUnique({
+            where: { userId: data.userId },
+            include: { items: true },
+        });
+
+        if (!cart) {
+            throw new NotFoundException(`Cart for user ${data.userId} not found`);
+        }
+
+        // Check if the product is in the cart
+        const cartItem = cart.items.find((item) => item.productId === data.productId);
+        if (!cartItem) {
+            throw new NotFoundException(`Product with ID ${data.productId} not found in cart`);
+        }
+
+        // Increase the product quantity by one
+        await this.prisma.cartItem.update({
+            where: { id: cartItem.id },
+            data: { quantity: cartItem.quantity + 1 },
+        });
+
+        return this.calculateCartForDisplay(cart.id);
+    }
+
+    async getCart(userId: string): Promise<CartForDisplayDto> {
         const cart = await this.prisma.cart.findUnique({
             where: { userId },
             include: { items: { include: { product: true } } },
@@ -136,6 +154,36 @@ export class CartService {
             throw new NotFoundException(`Cart for user ${userId} not found`);
         }
 
-        return cart;
+        return this.calculateCartForDisplay(cart.id);
+    }
+
+    private async calculateCartForDisplay(cartId: string): Promise<CartForDisplayDto> {
+        const cart = await this.prisma.cart.findUnique({
+            where: { id: cartId },
+            include: { items: { include: { product: true } } },
+        });
+
+        const items = cart.items.map((item) => ({
+            id: item.product.id,
+            name: item.product.name,
+            description: item.product.description,
+            price: item.product.price,
+            weight: item.product.weight,
+            imageSrc: item.product.imageSrc,
+            quantity: item.quantity,
+        }));
+
+        const totalCost = items.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0);
+        const deliveryCost = 10.0; // Example fixed delivery cost
+        const serviceFee = 5.0; // Example fixed service fee
+        const totalAmount = totalCost + deliveryCost + serviceFee;
+
+        return {
+            items,
+            totalCost,
+            deliveryCost,
+            serviceFee,
+            totalAmount,
+        };
     }
 }
