@@ -92,7 +92,6 @@ export const Cart: React.FC = () => {
             </div>
             <div className="flex justify-between space-x-2 mb-4">
                 <button className="flex-1">Доставка</button>
-                <button className="flex-1">Самовывоз</button>
             </div>
             {items.map((item, index) => (
                 <CartItem
