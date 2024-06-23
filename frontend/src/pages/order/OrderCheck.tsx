@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate, useParams} from "react-router-dom";
-import {API} from "../../api";
-import {OrderDetails} from "../../entities/OrderDetails.ts";
+import { useParams } from "react-router-dom";
+import { API } from "../../api";
+import { OrderDetails } from "../../entities/OrderDetails.ts";
 
 const api = new API();
 
@@ -25,7 +25,6 @@ export const OrderCheck: React.FC = () => {
     const [order, setOrder] = useState<OrderDetails | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchOrderDetails = async () => {
@@ -44,8 +43,8 @@ export const OrderCheck: React.FC = () => {
 
     const handleConfirm = async () => {
         try {
-            await api.confirmOrder(orderNumber!);
-            navigate(`/order/${orderNumber}`, { state: { order: { ...order, state: "CONFIRMED" } } });
+            const updatedOrder = await api.confirmOrder(orderNumber!);
+            setOrder(updatedOrder);
         } catch (error) {
             console.error("Failed to confirm order:", error);
         }
@@ -53,8 +52,8 @@ export const OrderCheck: React.FC = () => {
 
     const handleDecline = async () => {
         try {
-            await api.declineOrder(orderNumber!);
-            navigate(`/order/${orderNumber}`, { state: { order: { ...order, state: "DECLINED" } } });
+            const updatedOrder = await api.declineOrder(orderNumber!);
+            setOrder(updatedOrder);
         } catch (error) {
             console.error("Failed to decline order:", error);
         }

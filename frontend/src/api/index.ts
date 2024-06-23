@@ -72,15 +72,15 @@ export class API {
             .then((res) => res.data);
     }
 
-    async confirmOrder(orderNumber: string): Promise<void> {
+    async confirmOrder(orderNumber: string): Promise<OrderDetails> {
         return this.client
-            .post<void>(`/orders/${orderNumber}/confirm`)
+            .post<OrderDetails>(`/orders/${orderNumber}/confirm`)
             .then((res) => res.data);
     }
 
-    async declineOrder(orderNumber: string): Promise<void> {
+    async declineOrder(orderNumber: string): Promise<OrderDetails> {
         return this.client
-            .post<void>(`/orders/${orderNumber}/decline`)
+            .post<OrderDetails>(`/orders/${orderNumber}/decline`)
             .then((res) => res.data);
     }
 }
