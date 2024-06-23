@@ -1,7 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import {Restaurant} from "../entities/Restaurant.ts";
 import {MenuCategory} from "../entities/MenuCategory.ts";
-import {Cart} from "../entities/Cart.ts";
 import {CartResponse} from "../models/cart/CartResponse.ts";
 import {OrderDetails} from "../entities/OrderDetails.ts";
 
@@ -39,19 +38,25 @@ export class API {
 
     async getCart(): Promise<CartResponse> {
         return this.client
-            .get<CartResponse>(`/cart/0a34e07f-15f2-41f1-8a4e-8c433fbe9e25`)
+            .get<CartResponse>(`/cart/`)
             .then((res) => res.data);
     }
 
     async decreaseCartItem(productId: number): Promise<CartResponse> {
         return this.client
-            .post<CartResponse>(`/cart/decrease`, { productId, "userId": "0a34e07f-15f2-41f1-8a4e-8c433fbe9e25" })
+            .post<CartResponse>(`/cart/decrease`, { productId })
             .then((res) => res.data);
     }
 
     async increaseCartItem(productId: number): Promise<CartResponse> {
         return this.client
-            .post<CartResponse>(`/cart/increase`, { productId, "userId": "0a34e07f-15f2-41f1-8a4e-8c433fbe9e25" })
+            .post<CartResponse>(`/cart/increase`, { productId })
+            .then((res) => res.data);
+    }
+
+    async addToCart(productId: number, quantity: number): Promise<void> {
+        return this.client
+            .post<void>(`/cart/add`, { productId, quantity })
             .then((res) => res.data);
     }
 

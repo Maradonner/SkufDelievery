@@ -1,16 +1,16 @@
-import {Injectable, NotFoundException} from "@nestjs/common";
-import {PrismaService} from "../prisma.service";
-import {AddToCartDto} from "../dto/Cart/AddToCartDto";
-import {RemoveFromCartDto} from "../dto/Cart/RemoveFromCartDto";
-import {DecreaseCartItemDto} from "../dto/Cart/DecreaseCartItemDto";
-import {IncreaseCartItemDto} from "../dto/Cart/IncreaseCartItemDto";
-import {CartForDisplayDto} from "../dto/Cart/CartForDisplayDto";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma.service';
+import { AddToCartDto } from '../dto/Cart/AddToCartDto';
+import { RemoveFromCartDto } from '../dto/Cart/RemoveFromCartDto';
+import { DecreaseCartItemDto } from '../dto/Cart/DecreaseCartItemDto';
+import { IncreaseCartItemDto } from '../dto/Cart/IncreaseCartItemDto';
+import { CartForDisplayDto } from '../dto/Cart/CartForDisplayDto';
 
 @Injectable()
 export class CartService {
     constructor(private prisma: PrismaService) {}
 
-    async addToCart(data: AddToCartDto): Promise<CartForDisplayDto> {
+    async addToCart(userId: string, data: AddToCartDto): Promise<CartForDisplayDto> {
         // Check if the product exists
         const product = await this.prisma.productItem.findUnique({
             where: { id: data.productId },
@@ -22,14 +22,14 @@ export class CartService {
 
         // Check if the cart exists for the user, if not create one
         let cart = await this.prisma.cart.findUnique({
-            where: { userId: data.userId },
+            where: { userId },
             include: { items: true },
         });
 
         if (!cart) {
             cart = await this.prisma.cart.create({
                 data: {
-                    userId: data.userId,
+                    userId,
                     items: {
                         create: [{ productId: data.productId, quantity: data.quantity }],
                     },
@@ -60,15 +60,15 @@ export class CartService {
         return this.calculateCartForDisplay(cart.id);
     }
 
-    async removeFromCart(data: RemoveFromCartDto): Promise<CartForDisplayDto> {
+    async removeFromCart(userId: string, data: RemoveFromCartDto): Promise<CartForDisplayDto> {
         // Check if the cart exists for the user
         const cart = await this.prisma.cart.findUnique({
-            where: { userId: data.userId },
+            where: { userId },
             include: { items: true },
         });
 
         if (!cart) {
-            throw new NotFoundException(`Cart for user ${data.userId} not found`);
+            throw new NotFoundException(`Cart for user ${userId} not found`);
         }
 
         // Check if the product is in the cart
@@ -85,15 +85,15 @@ export class CartService {
         return this.calculateCartForDisplay(cart.id);
     }
 
-    async decreaseCartItem(data: DecreaseCartItemDto): Promise<CartForDisplayDto> {
+    async decreaseCartItem(userId: string, data: DecreaseCartItemDto): Promise<CartForDisplayDto> {
         // Check if the cart exists for the user
         const cart = await this.prisma.cart.findUnique({
-            where: { userId: data.userId },
+            where: { userId },
             include: { items: true },
         });
 
         if (!cart) {
-            throw new NotFoundException(`Cart for user ${data.userId} not found`);
+            throw new NotFoundException(`Cart for user ${userId} not found`);
         }
 
         // Check if the product is in the cart
@@ -118,15 +118,15 @@ export class CartService {
         return this.calculateCartForDisplay(cart.id);
     }
 
-    async increaseCartItem(data: IncreaseCartItemDto): Promise<CartForDisplayDto> {
+    async increaseCartItem(userId: string, data: IncreaseCartItemDto): Promise<CartForDisplayDto> {
         // Check if the cart exists for the user
         const cart = await this.prisma.cart.findUnique({
-            where: { userId: data.userId },
+            where: { userId },
             include: { items: true },
         });
 
         if (!cart) {
-            throw new NotFoundException(`Cart for user ${data.userId} not found`);
+            throw new NotFoundException(`Cart for user ${userId} not found`);
         }
 
         // Check if the product is in the cart

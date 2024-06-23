@@ -7,7 +7,6 @@ export const CartSummary: React.FC<CartSummaryProps> = ({ deliveryCost }) => (
         <Icon className="text-yellow-500 w-6 h-6" />
         <div className="flex-1">
             <div className="font-bold">Доставка {deliveryCost} ₽</div>
-            <div className="text-sm text-gray-500">Больше заказ — дешевле доставка</div>
         </div>
         <Icon className="text-gray-500 w-4 h-4" />
     </div>

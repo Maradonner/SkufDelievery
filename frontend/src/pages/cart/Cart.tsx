@@ -102,16 +102,6 @@ export const Cart: React.FC = () => {
                     onDecrease={() => handleDecrease(index)}
                 />
             ))}
-            <div className="mb-4">
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Адрес</label>
-                <input
-                    type="text"
-                    id="address"
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </div>
             <CartSummary deliveryCost={deliveryCost} totalCost={totalCost} />
             <button
                 className={`w-full bg-[#FFD600] text-black font-bold py-3 rounded-lg ${items.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
